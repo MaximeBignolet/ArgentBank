@@ -1,5 +1,5 @@
 import "./assets/sass/_globas.scss";
-import ArgentBankAppRoutes from "./components/ArgentBankAppRoutes";
+import ArgentBankAppRoutes from "./components/routes/ArgentBankAppRoutes";
 
 function App() {
   return (
