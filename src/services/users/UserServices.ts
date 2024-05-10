@@ -50,3 +50,27 @@ export const postUserData = async (): Promise<User> => {
     throw e;
   }
 };
+
+export const editUserProfile = async (firstName: string, lastName: string) => {
+  const requestBody = {
+    firstName: firstName,
+    lastName: lastName,
+  };
+  const token = localStorage.getItem("auth_token");
+  try {
+    await axios.put(`${baseUrl}${Endpoint.editUserProfile}`, requestBody, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": `application/json`,
+        Accept: `application/json`,
+      },
+    });
+  } catch (e: any) {
+    if (e instanceof AxiosError) {
+      console.error(e.message);
+    } else {
+      console.error({ message: e.message });
+    }
+    throw e;
+  }
+};

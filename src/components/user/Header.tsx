@@ -1,50 +1,108 @@
-import { useState } from "react";
-import { User } from "../../models/User";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchedUser,
+  udpateFirstname,
+  updateLastname,
+} from "../../store/slices/UserSlice";
+import { useEffect, useState } from "react";
+import { AppDispatch, RootState } from "../../store/store";
+import { editUserProfile } from "../../services/users/UserServices";
 
-type propsUser = {
-  userData: User | null;
-};
+const Header = () => {
+  const dispatch: AppDispatch = useDispatch();
+  const { firstName, lastName } = useSelector((state: RootState) => state.user);
+  const [toggleEditUser, setToggleEditUser] = useState(false);
+  const [newfirstname, setNewFirstName] = useState(firstName);
+  const [newLastname, setNewLastName] = useState(lastName);
 
-const Header: React.FC<propsUser> = ({ userData }) => {
-  const [hasUserClickedOnEditButton, setHasUserClickedOnEditButton] =
-    useState(false);
+  useEffect(() => {
+    setNewFirstName(firstName);
+    setNewLastName(lastName);
+  }, [firstName, lastName]);
+
+  function handleEditFormChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (e.currentTarget.id === "firstName") {
+      setNewFirstName(e.target.value);
+    } else {
+      setNewLastName(e.target.value);
+    }
+  }
+
+  function handleEditFormSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    dispatch(udpateFirstname(newfirstname));
+    dispatch(updateLastname(newLastname));
+    editUserProfile(newfirstname, newLastname);
+    setToggleEditUser(false);
+  }
+
+  function handleCancel() {
+    setToggleEditUser(false);
+    setNewFirstName(firstName);
+    setNewLastName(lastName);
+  }
+
+  useEffect(() => {
+    dispatch(fetchedUser());
+  }, [dispatch]);
 
   return (
     <div className="header">
-      {userData ? (
-        <h1>
-          Welcome back
-          <br />
-          {!hasUserClickedOnEditButton ? (
-            <p>{userData.fullname}</p>
-          ) : (
-            <div className="user-fullname">
-              <label></label>
-              <input type="text" id="fullname" />
+      <h1>
+        Welcome back
+        <br />
+        {!toggleEditUser ? (
+          <p>
+            {firstName} {lastName}
+          </p>
+        ) : (
+          <form onSubmit={handleEditFormSubmit}>
+            <div className="user-edit-form">
+              <div>
+                <label>
+                  <input
+                    type="text"
+                    name="firstName"
+                    id="firstName"
+                    value={newfirstname}
+                    className="user-edit-input"
+                    onChange={handleEditFormChange}
+                  />
+                </label>
+              </div>
+              <div>
+                <label>
+                  <input
+                    type="text"
+                    name="lastName"
+                    id="lastName"
+                    value={newLastname}
+                    className="user-edit-input"
+                    onChange={handleEditFormChange}
+                  />
+                </label>
+              </div>
             </div>
-          )}
-        </h1>
-      ) : (
-        <p>Erreur dans la récupération des données de l'utilisateur</p>
-      )}
-      {!hasUserClickedOnEditButton ? (
+            <input type="submit" value="Save" className="edit-button" />
+            <button
+              type="button"
+              className="edit-button cancel-button"
+              onClick={handleCancel}
+            >
+              Cancel
+            </button>
+          </form>
+        )}
+      </h1>
+      {!toggleEditUser ? (
         <button
           className="edit-button"
-          onClick={() =>
-            setHasUserClickedOnEditButton(!hasUserClickedOnEditButton)
-          }
+          onClick={() => setToggleEditUser(!toggleEditUser)}
         >
           Edit Name
         </button>
       ) : (
-        <button
-          className="edit-button"
-          onClick={() =>
-            setHasUserClickedOnEditButton(!hasUserClickedOnEditButton)
-          }
-        >
-          Validate
-        </button>
+        <></>
       )}
     </div>
   );

@@ -9,8 +9,4 @@ export class User {
     this.firstname = params.firstname;
     this.lastname = params.lastname;
   }
-
-  get fullname() {
-    return `${this.firstname} ${this.lastname}`;
-  }
 }
