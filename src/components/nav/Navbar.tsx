@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom";
 import Logo from "./Logo";
 import { RouteHelper } from "../../helpers/routes-helper";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
   return (
@@ -9,10 +11,10 @@ const Navbar = () => {
         <Logo />
         <div>
           <NavLink to={RouteHelper.signIn}>
-            <p className="main-nav-item">
-              <i className="fa fa-user-circle"></i>
+            <NavLink to={RouteHelper.signIn} className="main-nav-item">
+              <FontAwesomeIcon icon={faUserCircle} />
               Sign In
-            </p>
+            </NavLink>
           </NavLink>
         </div>
       </nav>

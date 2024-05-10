@@ -1,12 +1,16 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Logo from "./Logo";
 import { removeToken } from "../../store/slices/AuthSlice";
 import { NavLink } from "react-router-dom";
 import { RouteHelper } from "../../helpers/routes-helper";
+import { AppDispatch, RootState } from "../../store/store";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
 
 const NavbarConnected = () => {
-  const dispatch = useDispatch();
-
+  const dispatch: AppDispatch = useDispatch();
+  const { firstName } = useSelector((state: RootState) => state.user);
   function onClickLogOut() {
     dispatch(removeToken());
   }
@@ -15,16 +19,16 @@ const NavbarConnected = () => {
     <nav className="main-nav">
       <Logo />
       <div>
-        <a className="main-nav-item" href="./user.html">
-          <i className="fa fa-user-circle"></i>
-          Tony
-        </a>
+        <NavLink to={RouteHelper.userhome} className="main-nav-item">
+          <FontAwesomeIcon icon={faUser} />
+          {firstName}
+        </NavLink>
         <NavLink
           to={RouteHelper.home}
           className="main-nav-item"
           onClick={onClickLogOut}
         >
-          <i className="fa fa-sign-out"></i>
+          <FontAwesomeIcon icon={faRightFromBracket} />
           Sign Out
         </NavLink>
       </div>
