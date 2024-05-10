@@ -1,18 +1,27 @@
-import NavbarConnected from "../nav/NavbarConnected";
+import { useEffect, useState } from "react";
+import NavbarConnected from "../components/nav/NavbarConnected";
+import { postUserData } from "../services/users/UserServices";
+import Header from "../components/user/Header";
+import { User } from "../models/User";
 
 const UserHome = () => {
+  const [user, setUser] = useState<User | null>(null);
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const fetchedUser = await postUserData();
+        setUser(fetchedUser);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchUserData();
+  }, []);
   return (
     <div>
       <NavbarConnected />
       <main className="main bg-dark">
-        <div className="header">
-          <h1>
-            Welcome back
-            <br />
-            Tony Jarvis!
-          </h1>
-          <button className="edit-button">Edit Name</button>
-        </div>
+        <Header userData={user} />
         <h2 className="sr-only">Accounts</h2>
         <section className="account">
           <div className="account-content-wrapper">

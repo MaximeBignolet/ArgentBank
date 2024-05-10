@@ -1,5 +1,4 @@
 // Model générique pour un user
-
 export class User {
   email: string;
   firstname: string;
@@ -9,5 +8,9 @@ export class User {
     this.email = params.email;
     this.firstname = params.firstname;
     this.lastname = params.lastname;
+  }
+
+  get fullname() {
+    return `${this.firstname} ${this.lastname}`;
   }
 }

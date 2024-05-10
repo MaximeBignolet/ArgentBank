@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "../../pages/Home";
 import SignIn from "../../pages/Signin";
-import UserHome from "../users/UserHome";
+import UserHome from "../../pages/UserHome";
 import PrivateRoutes from "./PrivateRoutes";
 const ArgentBankAppRoutes = () => {
   return (

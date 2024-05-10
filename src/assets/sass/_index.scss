@@ -244,6 +244,12 @@
   .header {
     color: #fff;
     margin-bottom: 2rem;
+
+    .user-fullname {
+        min-height: 43.5px;
+        margin-top: 32px;
+        margin-bottom: 32px;
+    }
   }
   
   .transaction-button {
