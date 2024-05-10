@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { loginUser } from "../../services/UserServices";
+import { loginUser } from "../../services/users/UserServices";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setToken } from "../../store/slices/AuthSlice";
 
 const FormSignin = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   function handleChangeInputSignIn(e: React.ChangeEvent<HTMLInputElement>) {
     e.currentTarget.id === "username"
@@ -17,8 +20,11 @@ const FormSignin = () => {
     e.preventDefault();
     try {
       const user = await loginUser(email, password);
+      const token = user.data.body.token;
+
+      dispatch(setToken(token));
       if (user) {
-        navigate("/");
+        navigate("/user-home");
       }
     } catch (e: any) {
       console.error(e);

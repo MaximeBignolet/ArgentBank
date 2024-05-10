@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import { Endpoint } from "../helpers/endpoints";
+import { Endpoint } from "../../helpers/endpoints";
 
 const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
 
