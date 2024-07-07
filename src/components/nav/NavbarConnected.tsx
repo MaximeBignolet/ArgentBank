@@ -11,7 +11,7 @@ import { faUser } from "@fortawesome/free-regular-svg-icons";
 const NavbarConnected = () => {
   const dispatch: AppDispatch = useDispatch();
   const { firstName } = useSelector((state: RootState) => state.user);
-  function onClickLogOut() {
+  const onClickLogOut = () => {
     dispatch(removeToken());
   }
 

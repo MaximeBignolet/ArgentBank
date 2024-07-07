@@ -44,6 +44,9 @@ export const postUserData = async (): Promise<User> => {
   } catch (e: any) {
     if (e instanceof AxiosError) {
       console.error(e.message);
+      if(e.response?.status === 401) {
+        localStorage.clear();
+      }
     } else {
       console.error({ message: e.message });
     }
@@ -68,6 +71,9 @@ export const editUserProfile = async (firstName: string, lastName: string) => {
   } catch (e: any) {
     if (e instanceof AxiosError) {
       console.error(e.message);
+      if(e.response?.status === 401) {
+        localStorage.clear();
+      }
     } else {
       console.error({ message: e.message });
     }

@@ -20,7 +20,7 @@ const Header = () => {
     setNewLastName(lastName);
   }, [firstName, lastName]);
 
-  function handleEditFormChange(e: React.ChangeEvent<HTMLInputElement>) {
+  const  handleEditFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.id === "firstName") {
       setNewFirstName(e.target.value);
     } else {
@@ -28,7 +28,7 @@ const Header = () => {
     }
   }
 
-  function handleEditFormSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const handleEditFormSubmit = (e: React.FormEvent<HTMLFormElement>) =>  {
     e.preventDefault();
     dispatch(udpateFirstname(newfirstname));
     dispatch(updateLastname(newLastname));
@@ -36,7 +36,7 @@ const Header = () => {
     setToggleEditUser(false);
   }
 
-  function handleCancel() {
+  const handleCancel = () => {
     setToggleEditUser(false);
     setNewFirstName(firstName);
     setNewLastName(lastName);

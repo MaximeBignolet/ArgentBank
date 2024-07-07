@@ -1,0 +1,302 @@
+swagger: "2.0"
+info:
+  title: Bank Argent API documentation
+  description: Contains all available API endpoints in this codebase
+  version: 1.0.0
+  termsOfService: http://swagger.io/terms/
+host: localhost:3001
+basePath: /api/v2
+schemes:
+  - http
+paths:
+  /transactions/all:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions Module
+      summary: get all transactions
+      description: API for transactions
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Successfully get all transactions
+          schema:
+            $ref: "#/definitions/TransactionsResponse"
+        "400":
+          description: Invalid Token
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "401":
+          description: Unauthorized - Token is missing or invalid
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "403":
+          description: Forbidden - Insufficient permissions
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /transaction/{id}:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions Module
+      summary: Transaction detail
+      description: API for fetching a transaction
+      parameters:
+        - in: path
+          name: id
+          description: Transaction ID
+          required: true
+          type: string
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Transaction retrieved successfully
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "400":
+          description: Invalid Fields
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "401":
+          description: Unauthorized - Token is missing or invalid
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "403":
+          description: Forbidden - Insufficient permissions
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions Module
+      summary: Update a transaction
+      description: API for updating a transaction
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Update transaction attributes
+          required: true
+          schema:
+            $ref: "#/definitions/EditTransaction"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Transaction updated successfully
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "400":
+          description: Invalid Fields
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "401":
+          description: Unauthorized - Token is missing or invalid
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "403":
+          description: Forbidden - Insufficient permissions
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions Module
+      summary: Delete a transaction
+      description: API for deleting a transaction
+      parameters:
+        - in: path
+          name: id
+          description: Transaction ID
+          required: true
+          type: string
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Transaction deleted successfully
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "400":
+          description: Invalid Fields
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "401":
+          description: Unauthorized - Token is missing or invalid
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "403":
+          description: Forbidden - Insufficient permissions
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /transaction:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions Module
+      summary: Create a new transaction
+      description: API for creating a new transaction
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Create a new transaction
+          required: true
+          schema:
+            $ref: "#/definitions/NewTransaction"
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: Transaction created successfully
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "400":
+          description: Invalid Fields
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "401":
+          description: Unauthorized - Token is missing or invalid
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "403":
+          description: Forbidden - Insufficient permissions
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+definitions:
+  Wallet_ID:
+    type: object
+    required:
+      - wallet_id
+    properties:
+      wallet_id:
+        type: number
+        description: wallet id
+  transaction_id:
+    type: object
+    required:
+      - transaction_id
+    properties:
+      transaction_id:
+        type: number
+        description: transaction id
+  ApiResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      account_title:
+        type: string
+      transactions:
+        type: object
+        properties:
+          id:
+            type: string
+          date:
+            type: string
+          description:
+            type: string
+          amount:
+            type: number
+          balance:
+            type: number
+          transaction_type:
+            type: string
+          category:
+            type: string
+          notes:
+            type: string
+  TransactionsResponse:
+    type: object
+    properties:
+      account_title:
+        type: string
+      amount:
+        type: number
+      account_description:
+        type: string
+  EditTransaction:
+    type: object
+    properties:
+      category:
+        type: string
+      notes:
+        type: string
+  NewTransaction:
+    type: object
+    required:
+      - amount
+      - category
+    properties:
+      amount:
+        type: number
+        description: Transaction amount
+      category:
+        type: string
+        description: Transaction category
+      notes:
+        type: string
+        description: Transaction notes
+  ErrorResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string

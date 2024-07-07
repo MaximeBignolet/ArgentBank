@@ -3,20 +3,22 @@ import { loginUser } from "../../services/users/UserServices";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setToken } from "../../store/slices/AuthSlice";
+import { AxiosError } from "axios";
 
 const FormSignin = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState("")
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  function handleChangeInputSignIn(e: React.ChangeEvent<HTMLInputElement>) {
+  const handleChangeInputSignIn = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.currentTarget.id === "username"
       ? setEmail(e.target.value)
       : setPassword(e.target.value);
   }
 
-  async function handleFormSignInSumbit(e: React.FormEvent<HTMLFormElement>) {
+   const handleFormSignInSumbit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const user = await loginUser(email, password);
@@ -26,8 +28,10 @@ const FormSignin = () => {
       if (user) {
         navigate("/user-home");
       }
-    } catch (e: any) {
-      console.error(e);
+    } catch (e) {
+      if(e instanceof AxiosError){
+        setError(e.response?.data.message)
+      }
     }
   }
 
@@ -49,6 +53,9 @@ const FormSignin = () => {
         <input type="checkbox" id="remember-me" />
         <label>Remember me</label>
       </div>
+     {error &&  <div className={`error_form_sign_in ${error ? 'show' : ''}`}>
+        {error}
+      </div>}
       <input type="submit" value="Sign In" className="sign-in-button" />
     </form>
   );
